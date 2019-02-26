@@ -1,8 +1,18 @@
-const {Client, MessageEmbed} = require('discord.js');
+const {Client, Collection} = require('discord.js');
+const fs = require('fs');
 
 const cfg = require('./config/settings.json');
+const data = require('./botdata.json') || undefined; //TODO: create if it doesn't exist
 
 const client = new Client();
+client.commands = new Collection();
+
+const commandFiles = fs.readdirSync(__dirname + '/commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+}
 
 // updatePresence()
 // Updates the presence of the bot. Argument is still pending...
@@ -27,6 +37,18 @@ client.on('message', async message => {
 
   const args = message.content.slice(cfg.prefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
+
+  const options = { args: args, cfg: cfg, data: data, command: client.commands };
+
+  if (!client.commands.has(command)) return;
+
+  try {
+    client.commands.get(command).execute(message, options);
+    console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname} issued command ${command}.`);
+  } catch (error) {
+    console.error(error);
+    message.reply("there's been a problem executing your command.");
+  }
 });
 
 client.on("reconnecting", () => {
