@@ -1,0 +1,23 @@
+{
+  "name": "discord-gcs-variety",
+  "version": "1.0.0",
+  "description": "A bot used by the Greencoast Studios' Discord to remind us of certain things.",
+  "main": "./src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greencoast-studios/discord-gcs-variety.git"
+  },
+  "author": "Greencoast Studios",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/greencoast-studios/discord-gcs-variety/issues"
+  },
+  "homepage": "https://github.com/greencoast-studios/discord-gcs-variety#readme",
+  "dependencies": {
+    "discord.js": "discordjs/discord.js"
+  }
+}
