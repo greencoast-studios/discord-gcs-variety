@@ -3,6 +3,6 @@ module.exports = {
   description: "Sends the organization's GitHub page.",
   emoji: ':tools:',
   execute(message, options) {
-    message.reply(`our GitHub Organization URL is: **${options.data.git_url}**`);
+    message.reply(`our GitHub Organization URL is: **${options.data.github}**`);
   }
 };

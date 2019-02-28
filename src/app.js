@@ -15,9 +15,9 @@ for (const file of commandFiles) {
 }
 
 // updatePresence()
-// Updates the presence of the bot. Argument is still pending...
+// Updates the presence of the bot. Argument is still pending to design.
 function updatePresence() {
-  const presence = 'in Greencoast Studios!';
+  const presence = `${cfg.prefix}help`;
   client.user.setPresence({
     activity: {
       name: presence,
@@ -38,7 +38,13 @@ client.on('message', async message => {
   const args = message.content.slice(cfg.prefix.length).trim().split(/ +/);
   const command = args.shift().toLowerCase();
 
-  const options = { args: args, cfg: cfg, data: data, command: client.commands };
+  const options = {
+    args: args,
+    cfg: cfg,
+    data: data,
+    command: client.commands,
+    user: client.user
+  };
 
   if (!client.commands.has(command)) return;
 

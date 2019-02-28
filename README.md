@@ -1,13 +1,16 @@
 # Greencoast Variety Discord Bot
+
 This is a simple bot that is used in the private Greencoast Studios' Discord server, it is mainly used to remind its members of certain things.
 
-## Requirements:
+## Requirements
+
 To self-host this bot you'll need the following:
 
 * [git](https://git-scm.com/)
 * [node.js](https://nodejs.org/en/)
 
-## Installation:
+## Installation
+
 In order to self-host this bot, first you'll need to clone this repository.
 
     git clone https://github.com/greencoast-studios/discord-gcs-variety.git
@@ -28,10 +31,12 @@ And run the bot with:
 
 or:
 
-    yarn install
+    yarn start
 
-## Usage:
+## Usage
+
 Type `$prefix help` in a text channel to receive a list of all the available commands.
 
-## Author:
+## Author
+
 This bot was made by [moonstar-x](https://github.com/moonstar-x) of [Greencoast Studios](https://github.com/greencoast-studios).
