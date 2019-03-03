@@ -17,7 +17,7 @@ module.exports = {
           fs.writeFile("./src/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
             if (err) return console.log(err);
           })
-          console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname} has changed the default ${type} role to ${role.name}.`);
+          console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has changed the default ${type} role to ${role.name}.`);
           console.log('[' + new Date().toLocaleTimeString() + ']', 'Role change written to config.');
           message.reply(`${type} default role has been changed to ${role}.`);
         } else {
@@ -82,12 +82,12 @@ module.exports = {
 
   autoAssign(member, options) {
     if (member.user.bot) {
-      console.log('[' + new Date().toLocaleTimeString() + ']', `Bot ${member.nickname} has joined.`);
+      console.log('[' + new Date().toLocaleTimeString() + ']', `Bot ${member.nickname || member.user.username} has joined.`);
       member.guild.roles.fetch(options.data.assign.bot)
         .then(role => member.roles.add(role))
         .catch(console.error);
     } else {
-      console.log('[' + new Date().toLocaleTimeString() + ']', `User ${member.nickname} has joined.`);
+      console.log('[' + new Date().toLocaleTimeString() + ']', `User ${member.nickname || member.user.username} has joined.`);
       member.guild.roles.fetch(options.data.assign.user)
         .then(role => member.roles.add(role))
         .catch(console.error);

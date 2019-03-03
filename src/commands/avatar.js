@@ -35,7 +35,7 @@ module.exports = {
         options.user.setAvatar(args)
           .then(user => {
             timeFromLastExecution = curTime;
-            console.log('[' + new Date().toLocaleTimeString() + ']', `Avatar has been changed by user ${message.member.nickname}.`);
+            console.log('[' + new Date().toLocaleTimeString() + ']', `Avatar has been changed by user ${message.member.nickname || message.member.user.username}.`);
             message.reply('avatar has been changed successfully.');
           })
           .catch( error => {
@@ -44,7 +44,7 @@ module.exports = {
           });
       } else {
         const timeRemaining = this.cooldown - intervalOfExection;
-        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname} has hit a cooldown and needs to wait ${showTimeRemaining(timeRemaining)} more.`);
+        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has hit a cooldown and needs to wait ${showTimeRemaining(timeRemaining)} more.`);
         message.reply(`you need to wait ${showTimeRemaining(timeRemaining)} more before issuing this command again.`);
       }
     } else {

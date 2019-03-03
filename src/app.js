@@ -49,7 +49,7 @@ client.on('message', async message => {
   if (!client.commands.has(command)) return;
 
   try {
-    console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname} issued command ${command}.`);
+    console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} issued command ${command}.`);
     client.commands.get(command).execute(message, options);
   } catch (error) {
     console.error(error);
