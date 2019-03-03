@@ -57,6 +57,17 @@ client.on('message', async message => {
   }
 });
 
+client.on("guildMemberAdd", async member => {
+  const options = {
+    data: data
+  }
+  client.commands.get("assign").autoAssign(member, options);
+});
+
+client.on("guildMemberRemove", async member => {
+  
+});
+
 client.on("reconnecting", () => {
   console.log('[' + new Date().toLocaleTimeString() + ']', 'Trying to reconnect...');
 });
