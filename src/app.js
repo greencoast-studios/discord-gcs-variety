@@ -49,8 +49,8 @@ client.on('message', async message => {
   if (!client.commands.has(command)) return;
 
   try {
-    client.commands.get(command).execute(message, options);
     console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname} issued command ${command}.`);
+    client.commands.get(command).execute(message, options);
   } catch (error) {
     console.error(error);
     message.reply("there's been a problem executing your command.");

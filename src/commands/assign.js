@@ -43,7 +43,7 @@ module.exports = {
       } else {
         message.member.guild.roles.fetch(newRole)
           .then(role => {
-            // If role is null, fetch() returns null when the role does not exist.
+            // fetch() returns null when the role does not exist.
             if (!role) {
               message.reply('role does not exist on server.');
             } else {
