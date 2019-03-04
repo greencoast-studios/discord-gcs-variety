@@ -1,11 +1,11 @@
 let timeFromLastExecution = undefined;
-// cooldown is in ms, 300000 ms = 5 mins
+// cooldown is in ms, 600000 ms = 10 mins
+const cooldown = 600000;
 
 module.exports = {
   name: 'avatar',
-  description: `Change the avatar of the bot to the image URL specified, if no argument is given, it returns the current avatar. Setting the avatar has a cooldown of ${this.cooldown / 1000}.`,
+  description: `Change the avatar of the bot to the image URL specified, if no argument is given, it returns the current avatar. Setting the avatar has a cooldown of ${cooldown / 60000} minutes.`,
   emoji: ":grinning:",
-  cooldown: 600000,
   execute(message, options) {
     const args = options.args.join(' ');
 
@@ -31,7 +31,7 @@ module.exports = {
       const curTime = Date.now();
       const intervalOfExection = curTime - timeFromLastExecution;
 
-      if (intervalOfExection > this.cooldown || !timeFromLastExecution) {
+      if (intervalOfExection > cooldown || !timeFromLastExecution) {
         options.user.setAvatar(args)
           .then(user => {
             timeFromLastExecution = curTime;
@@ -43,7 +43,7 @@ module.exports = {
             message.reply('a problem has ocurred when changing the avatar, make sure the specified URL is an image.')
           });
       } else {
-        const timeRemaining = this.cooldown - intervalOfExection;
+        const timeRemaining = cooldown - intervalOfExection;
         console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has hit a cooldown and needs to wait ${showTimeRemaining(timeRemaining)} more.`);
         message.reply(`you need to wait ${showTimeRemaining(timeRemaining)} more before issuing this command again.`);
       }
