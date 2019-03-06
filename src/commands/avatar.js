@@ -7,6 +7,7 @@ module.exports = {
   description: `Change the avatar of the bot to the image URL specified, if no argument is given, it returns the current avatar. Setting the avatar has a cooldown of ${cooldown / 60000} minutes.`,
   emoji: ":grinning:",
   execute(message, options) {
+    const { MessageAttachment } = require('discord.js');
     const args = options.args.join(' ');
 
     // showTimeRemaining(timeRemaining:Int) -> String
@@ -48,7 +49,8 @@ module.exports = {
         message.reply(`you need to wait ${showTimeRemaining(timeRemaining)} more before issuing this command again.`);
       }
     } else {
-      message.reply(`current avatar is set to: ${options.user.avatarURL('png')}`);
+      const attachment = new MessageAttachment(options.user.avatarURL('png'));
+      message.channel.send("The current avatar is set to:", attachment);
     }
   }
 };
