@@ -1,8 +1,27 @@
 const {Client, Collection} = require('discord.js');
 const fs = require('fs');
+const optionalRequire = require('optional-require');
 
 const cfg = require('./config/settings.json');
-const data = require('./botdata.json') || undefined; //TODO: create if it doesn't exist
+let data = undefined;
+
+function loadData(filename) {
+
+  if (fs.existsSync(filename)) {
+    data = optionalRequire(filename);
+    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file loaded successfully.");
+  } else {
+    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file not found. Creating...");
+    fs.writeFile(filename, JSON.stringify({}, null, 2), function(err) {
+      if (err) return console.log(err);
+    });
+    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file created!");
+    data = optionalRequire(filename);
+    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file loaded successfully.");
+  }
+}
+
+loadData('./src/botdata.json');
 
 const client = new Client();
 client.commands = new Collection();

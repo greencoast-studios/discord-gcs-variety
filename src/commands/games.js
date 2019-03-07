@@ -3,6 +3,6 @@ module.exports = {
   description: "Sends the game servers' IP address.",
   emoji: ':joystick:',
   execute(message, options) {
-    message.reply(`the IP of our game servers is: **${options.data.games}**`);
+    message.reply(`the IP of our game servers is: **${options.data.reminder.games}**`);
   }
 };
