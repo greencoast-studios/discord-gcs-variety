@@ -1,27 +1,19 @@
 const {Client, Collection} = require('discord.js');
 const fs = require('fs');
-const optionalRequire = require('optional-require');
+const optionalRequire = require('optional-require')(require);
 
 const cfg = require('./config/settings.json');
-let data = undefined;
+const data = optionalRequire('./botdata.json') || createDataFile('./src/botdata.json')
+console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file loaded successfully.");
 
-function loadData(filename) {
-
-  if (fs.existsSync(filename)) {
-    data = optionalRequire(filename);
-    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file loaded successfully.");
-  } else {
-    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file not found. Creating...");
-    fs.writeFile(filename, JSON.stringify({}, null, 2), function(err) {
-      if (err) return console.log(err);
-    });
-    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file created!");
-    data = optionalRequire(filename);
-    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file loaded successfully.");
-  }
+function createDataFile(filename) {
+  // Synchronous file creation.
+  console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file not found. Creating...");
+  fs.writeFileSync(filename, JSON.stringify({}, null, 2), function(err) {
+    if (err) return console.log(err);
+  });
+  console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file created!");
 }
-
-loadData('./src/botdata.json');
 
 const client = new Client();
 client.commands = new Collection();

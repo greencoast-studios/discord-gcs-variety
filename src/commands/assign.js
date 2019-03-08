@@ -85,12 +85,22 @@ module.exports = {
       console.log('[' + new Date().toLocaleTimeString() + ']', `Bot ${member.nickname || member.user.username} has joined.`);
       member.guild.roles.fetch(options.data.assign.bot)
         .then(role => member.roles.add(role))
-        .catch(console.error);
+        .catch(error => {
+          console.error(error);
+          if (error == "DiscordAPIError: Missing Access") {
+            member.guild.owner.user.send(`I don't have enough permissions to auto assign roles in ${member.guild.name}. Make sure I can **Manage Roles** and that my bot role is above the ones that I need to assign.`);
+          }
+        });
     } else {
       console.log('[' + new Date().toLocaleTimeString() + ']', `User ${member.nickname || member.user.username} has joined.`);
       member.guild.roles.fetch(options.data.assign.user)
         .then(role => member.roles.add(role))
-        .catch(console.error);
+        .catch(error => {
+          console.error(error);
+          if (error == "DiscordAPIError: Missing Access") {
+            member.guild.owner.user.send(`I don't have enough permissions to auto assign roles in ${member.guild.name}. Make sure I can **Manage Roles** and that my bot role is above the ones that I need to assign.`);
+          }
+        });
     }
   }
 };
