@@ -1,3 +1,14 @@
+/*
+  Properties:
+    name: The name of the command, it should be the same as the filename without its extension.
+    description: A brief description on how to use the command. This message is displayed when issuing the help command.
+    emoji: The emoji displayed alongside the command description when running the help command. (example => ":thinking:")
+    requiredPermission: The required permission to run this command, leave null if no specific permission is required.
+    exceptionalPermission: In case a command does require some sort of required permission but has an extra functionality
+      when running without arguments that should be able to be accessible by users that may not have the required permission.
+    cooldown: (Optional) In case a command should have a cooldown. Currently it should be handled within the command itself.
+*/
+
 module.exports = {
   name: '***',
   description: '***',
