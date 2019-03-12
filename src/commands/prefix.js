@@ -2,6 +2,8 @@ module.exports = {
   name: 'prefix',
   description: 'Changes the prefix used by this bot. If no argument is given, display the current prefix.',
   emoji: ":a:",
+  requiredPermission: "MANAGE_GUILD",
+  exceptionalPermission: true,
   execute(message, options) {
     const fs = require('fs');
 

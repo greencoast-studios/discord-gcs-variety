@@ -2,6 +2,8 @@ module.exports = {
   name: 'randomizer',
   description: 'Issue this command with a list of commands and the bot will reply you with a randomly selected option.',
   emoji: ":twisted_rightwards_arrows:",
+  requiredPermission: null,
+  exceptionalPermission: false,
   execute(message, options) {
     const { MessageEmbed } = require('discord.js');
 

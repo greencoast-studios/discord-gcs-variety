@@ -2,6 +2,8 @@ module.exports = {
   name: 'clear',
   description: 'Enter an integer argument defining the amount of messages to erase above the current message.',
   emoji: ":no_good:",
+  requiredPermission: "MANAGE_MESSAGES",
+  exceptionalPermission: false,
   timeout: 5000,
   execute(message, options) {
 

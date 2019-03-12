@@ -2,6 +2,8 @@ module.exports = {
   name: 'help',
   description: "Sends a list of the commands available as an embed message.",
   emoji: ':question:',
+  requiredPermission: null,
+  exceptionalPermission: false,
   execute(message, options) {
     const { MessageEmbed } = require('discord.js');
 
@@ -11,17 +13,19 @@ module.exports = {
     let skippedPush = undefined;
 
     for (let cmd of options.command) {
-      if (toPush) {
-        messageToPush = messageToPush.concat('\n', `${skippedPush[1].emoji} **${options.cfg.prefix}${skippedPush[1].name}** - ${skippedPush[1].description}`);
-      }
-      if (messageToPush.length < 1024 - cmd[1].description.length) {
-        messageToPush = messageToPush.concat('\n', `${cmd[1].emoji} **${options.cfg.prefix}${cmd[1].name}** - ${cmd[1].description}`);
-        toPush = false;
-      } else {
-        commandsArr.push(messageToPush);
-        messageToPush = "";
-        skippedPush = cmd;
-        toPush = true;
+      if (!cmd[1].requiredPermission || cmd[1].exceptionalPermission || message.member.hasPermission(cmd[1].requiredPermission)) {
+        if (toPush) {
+          messageToPush = messageToPush.concat('\n', `${skippedPush[1].emoji} **${options.cfg.prefix}${skippedPush[1].name}** - ${skippedPush[1].description}`);
+        }
+        if (messageToPush.length < 1024 - cmd[1].description.length) {
+          messageToPush = messageToPush.concat('\n', `${cmd[1].emoji} **${options.cfg.prefix}${cmd[1].name}** - ${cmd[1].description}`);
+          toPush = false;
+        } else {
+          commandsArr.push(messageToPush);
+          messageToPush = "";
+          skippedPush = cmd;
+          toPush = true;
+        }
       }
     }
     commandsArr.push(messageToPush)

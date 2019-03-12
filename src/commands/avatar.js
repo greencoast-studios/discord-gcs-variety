@@ -6,6 +6,8 @@ module.exports = {
   name: 'avatar',
   description: `Change the avatar of the bot to the image URL specified, if no argument is given, it returns the current avatar. Setting the avatar has a cooldown of ${cooldown / 60000} minutes.`,
   emoji: ":grinning:",
+  requiredPermission: "MANAGE_GUILD",
+  exceptionalPermission: true,
   execute(message, options) {
     const { MessageAttachment } = require('discord.js');
     const args = options.args.join(' ');

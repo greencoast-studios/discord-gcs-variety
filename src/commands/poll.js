@@ -3,6 +3,8 @@ module.exports = {
   description: 'Create a poll with up to 10 options. The first argument should be a question and the next ones are the available options. If only a question is issued, start the poll with yes/no options.',
   emoji: ":bar_chart:",
   maxOptions: 10,
+  requiredPermission: null,
+  exceptionalPermission: false,
   execute(message, options) {
     const { MessageEmbed } = require('discord.js');
     const spacesInsideQuotesRegEx = /('.*?'|".*?"|\S+)/gi;

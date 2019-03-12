@@ -2,6 +2,8 @@ module.exports = {
   name: 'assign',
   description: 'Assign a default role for new members, mention the role you wish to assign. Using argument "usage" or "help" will display a more detailed message.',
   emoji: ":spy:",
+  requiredPermission: "MANAGE_ROLES",
+  exceptionalPermission: false,
   execute(message, options) {
     const fs = require('fs');
     const { MessageEmbed } = require('discord.js');

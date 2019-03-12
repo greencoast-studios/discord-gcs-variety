@@ -2,6 +2,8 @@ module.exports = {
   name: '***',
   description: '***',
   emoji: ":***:",
+  requiredPermission: null,
+  exceptionalPermission: false,
   execute(message, options) {
 
   }

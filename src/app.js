@@ -59,12 +59,30 @@ client.on('message', async message => {
 
   if (!client.commands.has(command)) return;
 
-  try {
-    console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} issued command ${command}.`);
-    client.commands.get(command).execute(message, options);
-  } catch (error) {
-    console.error(error);
-    message.reply("there's been a problem executing your command.");
+  function executeCommand() {
+    try {
+      console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} issued command ${command}.`);
+      client.commands.get(command).execute(message, options);
+    } catch (error) {
+      console.error(error);
+      message.reply("there's been a problem executing your command.");
+    }
+  }
+
+  const requiredPermission = client.commands.get(command).requiredPermission;
+  if (requiredPermission) {
+    if (message.member.hasPermission(requiredPermission)) {
+      executeCommand();
+    } else {
+      // let regular users (without perms) to run commands that have a different functionality when no argument is given.
+      if (client.commands.get(command).exceptionalPermission && !args.length) {
+        executeCommand()
+      } else {
+        message.reply("you do not have the required permissions to run this command.");
+      }
+    }
+  } else {
+    executeCommand();
   }
 });
 

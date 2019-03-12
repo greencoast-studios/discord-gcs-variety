@@ -3,3 +3,4 @@ yarn.lock
 package-lock.json
 settings.json
 src/botdata.json
+src/botdata.json.bak
