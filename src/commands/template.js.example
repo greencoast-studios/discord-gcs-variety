@@ -6,6 +6,7 @@
     requiredPermission: The required permission to run this command, leave null if no specific permission is required.
     exceptionalPermission: In case a command does require some sort of required permission but has an extra functionality
       when running without arguments that should be able to be accessible by users that may not have the required permission.
+    writesToData: True if the command needs to write to the botdata file.
     cooldown: (Optional) In case a command should have a cooldown. Currently it should be handled within the command itself.
 */
 
@@ -15,6 +16,7 @@ module.exports = {
   emoji: ":***:",
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
 
   }

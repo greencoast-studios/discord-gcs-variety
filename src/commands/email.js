@@ -4,6 +4,7 @@ module.exports = {
   emoji: ':mailbox_with_mail:',
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     message.reply(`our email address is: **${options.data.reminder.email}**.`);
   }

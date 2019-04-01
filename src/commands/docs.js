@@ -4,6 +4,7 @@ module.exports = {
   emoji: ":closed_book:",
   requiredPermission: "MANAGE_CHANNELS",
   exceptionalPermission: true,
+  writesToData: true,
   execute(message, options) {
     const fs = require('fs');
     const { MessageEmbed } = require('discord.js');
@@ -14,13 +15,13 @@ module.exports = {
     function writeToJSON(curChannel, url = undefined) {
       if (options.data.docs.hasOwnProperty(curChannel)) {
         delete options.data.docs[curChannel];
-        fs.writeFile("./src/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
+        fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
           if (err) return console.log(err);
         });
         console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has deleted the documentation link for channel ${message.channel.name}`);
       } else {
         options.data.docs[curChannel] = url;
-        fs.writeFile("./src/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
+        fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
           if (err) return console.log(err);
         });
         console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has added the documentation link for channel ${message.channel.name} with the url: ${url}`);

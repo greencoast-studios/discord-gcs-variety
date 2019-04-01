@@ -4,6 +4,7 @@ module.exports = {
   emoji: ':tools:',
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     message.reply(`our GitHub Organization URL is: **${options.data.reminder.github}**`);
   }

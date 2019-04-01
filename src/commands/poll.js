@@ -5,6 +5,7 @@ module.exports = {
   maxOptions: 10,
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     const { MessageEmbed } = require('discord.js');
     const spacesInsideQuotesRegEx = /('.*?'|".*?"|\S+)/gi;

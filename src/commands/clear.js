@@ -4,6 +4,7 @@ module.exports = {
   emoji: ":no_good:",
   requiredPermission: "MANAGE_MESSAGES",
   exceptionalPermission: false,
+  writesToData: false,
   timeout: 5000,
   execute(message, options) {
 

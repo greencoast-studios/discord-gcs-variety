@@ -4,6 +4,7 @@ module.exports = {
   emoji: ':question:',
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     const { MessageEmbed } = require('discord.js');
 

@@ -4,6 +4,7 @@ module.exports = {
   emoji: ":face_palm: ",
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     if (options.args[0]) {
       let query = options.args.join("+");

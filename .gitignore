@@ -2,5 +2,5 @@ node_modules/
 yarn.lock
 package-lock.json
 settings.json
-src/botdata.json
-src/botdata.json.bak
+src/config/botdata.json
+src/config/botdata.json.bak

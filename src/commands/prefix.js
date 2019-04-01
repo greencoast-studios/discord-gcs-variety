@@ -4,6 +4,7 @@ module.exports = {
   emoji: ":a:",
   requiredPermission: "MANAGE_GUILD",
   exceptionalPermission: true,
+  writesToData: false,
   execute(message, options) {
     const fs = require('fs');
 

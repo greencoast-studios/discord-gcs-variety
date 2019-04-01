@@ -4,6 +4,7 @@ module.exports = {
   emoji: ':telephone_receiver:',
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     message.reply(`our TeamSpeak's IP is: **${options.data.reminder.ts}**`);
   }

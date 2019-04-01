@@ -1,18 +1,38 @@
 const {Client, Collection} = require('discord.js');
 const fs = require('fs');
-const optionalRequire = require('optional-require')(require);
 
-const cfg = require('./config/settings.json');
-const data = optionalRequire('./botdata.json') || createDataFile('./src/botdata.json')
+const settingsFilename = './config/settings.json';
+const dataFilename = './config/botdata.json';
+
+const cfg = require(settingsFilename);
+const data = loadDataFile(dataFilename);
 console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file loaded successfully.");
 
-function createDataFile(filename) {
-  // Synchronous file creation.
-  console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file not found. Creating...");
-  fs.writeFileSync(filename, JSON.stringify({}, null, 2), function(err) {
-    if (err) return console.log(err);
-  });
-  console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file created!");
+function loadDataFile(filename) {
+  if (fs.existsSync(`${__dirname}/${filename}`)) {
+    return require(filename);
+  } else {
+    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file not found. Creating...");
+    fs.writeFileSync(`${__dirname}/${filename}`, JSON.stringify({}, null, 2), function(err) {
+      if (err) return console.log(err);
+    });
+    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file created!");
+    return require(filename);
+  }
+}
+
+function addWritableCommandToJSON(command) {
+  if (data.hasOwnProperty(command)) {
+    console.log('[' + new Date().toLocaleTimeString() + ']', `${command} has been found in bot data, skipping...`);
+    return;
+  } else {
+    console.log('[' + new Date().toLocaleTimeString() + ']', `${command} has not been found, adding to bot data.`);
+    data[command] = {};
+    fs.writeFile(`${__dirname}/${dataFilename}`, JSON.stringify(data, null, 2), function (err) {
+      if (err) return console.log(err);
+    });
+    console.log('[' + new Date().toLocaleTimeString() + ']', `${command} has been added to bot data.`);
+  }
 }
 
 const client = new Client();
@@ -23,6 +43,9 @@ const commandFiles = fs.readdirSync(__dirname + '/commands').filter(file => file
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.name, command);
+  if (command.writesToData) {
+    addWritableCommandToJSON(file.slice(0, -3));
+  }
 }
 
 // updatePresence()

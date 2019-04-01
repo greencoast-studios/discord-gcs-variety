@@ -4,6 +4,7 @@ module.exports = {
   emoji: ':joystick:',
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     message.reply(`the IP of our game servers is: **${options.data.reminder.games}**`);
   }

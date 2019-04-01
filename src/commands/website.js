@@ -4,6 +4,7 @@ module.exports = {
   emoji: ':desktop:',
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     message.reply(`our website URL is: **${options.data.reminder.website}**`);
   }

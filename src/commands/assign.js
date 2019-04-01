@@ -4,6 +4,7 @@ module.exports = {
   emoji: ":spy:",
   requiredPermission: "MANAGE_ROLES",
   exceptionalPermission: false,
+  writesToData: true,
   execute(message, options) {
     const fs = require('fs');
     const { MessageEmbed } = require('discord.js');
@@ -13,19 +14,29 @@ module.exports = {
     // newRole should be a mention to the desired role which gets transformed to it's ID and stripped from any character.
     function setNewDefaultRole(newRole, type) {
 
-      function writeToJSON(role) {
-        if (options.data.assign.hasOwnProperty(type)) {
-          options.data.assign[type] = newRole;
-          fs.writeFile("./src/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
-            if (err) return console.log(err);
-          });
-          console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has changed the default ${type} role to ${role.name}.`);
-          console.log('[' + new Date().toLocaleTimeString() + ']', 'Role change written to config.');
-          message.reply(`${type} default role has been changed to ${role}.`);
-        } else {
-          console.error(Error("Unexpected Type."));
-          message.reply("something went wrong when trying to write to the configuration file.");
+      const typeEnum = {
+        "bot": "bot", 
+        "user": "user"
+      }
+
+      if (!typeEnum.hasOwnProperty(type)) {
+        var typeString = "";
+        for (type in typeEnum) {
+          typeString += `**${typeEnum[type]}**, `;
         }
+        message.reply(`role type is incorrect. Please use one of the following: ${typeString.slice(0, -2)}.`);
+        return;
+      }
+
+      function writeToJSON(role) {
+        options.data.assign[type] = newRole;
+        fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
+          if (err) return console.log(err);
+        });
+        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has changed the default ${type} role to ${role.name}.`);
+        console.log('[' + new Date().toLocaleTimeString() + ']', 'Role change written to config.');
+        message.reply(`${type} default role has been changed to ${role}.`);
+        
       }
 
       // Originally empty

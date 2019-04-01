@@ -8,6 +8,7 @@ module.exports = {
   emoji: ":grinning:",
   requiredPermission: "MANAGE_GUILD",
   exceptionalPermission: true,
+  writesToData: false,
   execute(message, options) {
     const { MessageAttachment } = require('discord.js');
     const args = options.args.join(' ');

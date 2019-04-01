@@ -4,6 +4,7 @@ module.exports = {
   emoji: ":twisted_rightwards_arrows:",
   requiredPermission: null,
   exceptionalPermission: false,
+  writesToData: false,
   execute(message, options) {
     const { MessageEmbed } = require('discord.js');
 

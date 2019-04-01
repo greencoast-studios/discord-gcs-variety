@@ -19,7 +19,6 @@
   "homepage": "https://github.com/greencoast-studios/discord-gcs-variety#readme",
   "dependencies": {
     "discord.js": "discordjs/discord.js",
-    "fs": "^0.0.1-security",
-    "optional-require": "^1.0.0"
+    "fs": "^0.0.1-security"
   }
 }
