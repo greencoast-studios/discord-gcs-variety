@@ -18,7 +18,7 @@ module.exports = {
           options.data.assign[type] = newRole;
           fs.writeFile("./src/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
             if (err) return console.log(err);
-          })
+          });
           console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has changed the default ${type} role to ${role.name}.`);
           console.log('[' + new Date().toLocaleTimeString() + ']', 'Role change written to config.');
           message.reply(`${type} default role has been changed to ${role}.`);
@@ -29,7 +29,7 @@ module.exports = {
       }
 
       // Originally empty
-      if (!newRole) {
+      if (!newRole && options.data.assign.hasOwnProperty(type)) {
         message.member.guild.roles.fetch(options.data.assign[type])
           .then(role => message.reply(`current default role set for ${type} is ${role}.`))
           .catch(console.error);
@@ -37,7 +37,7 @@ module.exports = {
       } 
 
       const numberRegex = /[^0-9]+/gi;
-      newRole = newRole.replace(numberRegex, "")
+      if (newRole) newRole = newRole.replace(numberRegex, "")
 
       // Empty after regex
       if (!newRole) {
