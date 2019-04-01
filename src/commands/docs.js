@@ -30,7 +30,7 @@ module.exports = {
 
     if (!argument) {
       if (options.data.docs.hasOwnProperty(curChannel)) {
-        message.reply(`this channel's documentation is: ${options.data.docs[curChannel]}`);
+        message.reply(`this channel's documentation is: **${options.data.docs[curChannel]}**`);
       } else {
         message.reply("this text channel has no documentation link assigned.");
       }
@@ -52,8 +52,12 @@ module.exports = {
         message.reply("a documentation link is already available for this text channel.");
       } else {
         const url = options.args[1];
-        writeToJSON(curChannel, url)
-        message.reply(`you've changed this text channel's documentation link to: **${url}**`);
+        if (url) {
+          writeToJSON(curChannel, url)
+          message.reply(`you've changed this text channel's documentation link to: **${url}**`);
+        } else {
+          message.reply("you need to especify a url to save.");
+        }
       }
 
     } else if (argument == "remove" || argument == "delete") {
