@@ -30,7 +30,7 @@ module.exports = {
 
     if (!argument) {
       if (options.data.docs.hasOwnProperty(curChannel)) {
-        message.reply(`this channel's documentation is: ${options.data.docs[curChannel]}`);
+        message.reply(`this channel's documentation is: **${options.data.docs[curChannel]}**`);
       } else {
         message.reply("this text channel has no documentation link assigned.");
       }
