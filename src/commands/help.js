@@ -29,6 +29,9 @@ module.exports = {
         }
       }
     }
+    if (toPush) {
+      messageToPush = messageToPush.concat('\n', `${skippedPush[1].emoji} **${options.cfg.prefix}${skippedPush[1].name}** - ${skippedPush[1].description}`);
+    }
     commandsArr.push(messageToPush)
 
     const embed = new MessageEmbed()
