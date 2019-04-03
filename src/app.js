@@ -1,8 +1,11 @@
 const {Client, Collection} = require('discord.js');
 const fs = require('fs');
+const RssFeedEmitter = require('rss-feed-emitter');
 
 const settingsFilename = './config/settings.json';
 const dataFilename = './config/botdata.json';
+
+let initialConn = false;
 
 const cfg = require(settingsFilename);
 const data = loadDataFile(dataFilename);
@@ -36,6 +39,7 @@ function addWritableCommandToJSON(command) {
 }
 
 const client = new Client();
+const feeder = new RssFeedEmitter();
 client.commands = new Collection();
 
 const commandFiles = fs.readdirSync(__dirname + '/commands').filter(file => file.endsWith('.js'));
@@ -61,9 +65,29 @@ function updatePresence() {
   .catch(console.error);
 }
 
+if (data.rss.hasOwnProperty("subscribedItems")) {
+  for (item of data.rss.subscribedItems) {
+    feeder.add({
+      url: item,
+      refresh: 300
+    })
+    console.log('[' + new Date().toLocaleTimeString() + ']', `Listening to RSS feed: ${item}`);
+  }
+}
+
 client.on('ready', () => {
   console.log('[' + new Date().toLocaleTimeString() + ']', 'Ready!');
   updatePresence();
+
+  if (!initialConn) {
+    feeder.on('new-item', item => {
+      client.channels.fetch(cfg.rss_channel_id)
+        .then(channel => channel.send(`**New RSS Entry:** ${item.title}\n**Date Published:** ${item.date}\n**Author:** ${item.author}\n**Read More:** ${item.link}`))
+        .catch(console.error)
+    })
+    initialConn = true;
+  }
+  
 });
 
 client.on('message', async message => {
@@ -77,7 +101,8 @@ client.on('message', async message => {
     cfg: cfg,
     data: data,
     command: client.commands,
-    user: client.user
+    user: client.user,
+    feeder: feeder
   };
 
   if (!client.commands.has(command)) return;
@@ -133,4 +158,4 @@ client.on("error", error => {
   console.error(error);
 });
 
-client.login(cfg.discord_token);
+client.login(cfg.discord_token)

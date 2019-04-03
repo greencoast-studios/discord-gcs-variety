@@ -19,7 +19,12 @@ module.exports = {
         if (firstEntry) {
           options.data.docs[curChannel] = [url];
         } else {
-          options.data.docs[curChannel].push(url);
+          if (options.data.docs[curChannel].includes(url)) {
+            message.reply("this documentation link is already assigned to this channel.");
+            return;
+          } else {
+            options.data.docs[curChannel].push(url);
+          }
         }
 
         fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
@@ -40,7 +45,7 @@ module.exports = {
       }
 
       if (options.data.docs.hasOwnProperty(curChannel)) {
-        const deletedURL = options.data.docs[curChannel].splice(index - 1, 1);
+        const deletedURL = options.data.docs[curChannel].splice(index - 1, 1).pop();
         fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
           if (err) return console.log(err);
         });
@@ -83,10 +88,10 @@ module.exports = {
         const embed = new MessageEmbed()
           .setTitle('List of available documentation links for this channel:')
           .setColor('GREY')
-          for (let i = 0; i < entryList.length; i++) {
-            embed.addField(`Page ${i + 1}:`, entryList[i]);
-          }
-          message.channel.send(embed);
+        for (let i = 0; i < entryList.length; i++) {
+          embed.addField(`Page ${i + 1}:`, entryList[i]);
+        }
+        message.channel.send(embed);
       } else {
         message.reply("this text channel has no documentation links available.");
       }
@@ -96,14 +101,14 @@ module.exports = {
         .setTitle('Docs command usage:')
         .setColor('GREY')
         .setDescription(`
-          Command usage: ${options.cfg.prefix}docs <add|remove> <documentation link>
-          If no command is specified, the bot will reply with the current documentation link set for its corresponding text channel.
-          The add/set command assigns a documentation link to this text channel.
-          The remove/delete command deletes the documentation link set to this text channel.
+          If no argument is specified, the bot will reply with the current documentation link indexed list for its corresponding text channel.
+          Add a new documentation link to this text channel with: ${options.cfg.prefix}docs add <link>
+          Delete a documentation link with: ${options.cfg.prefix}docs remove|delete <index>
+          Check the index with: ${options.cfg.prefix}docs 
         `);
       message.channel.send(embed);
 
-    } else if (argument == "add" || argument == "set") {
+    } else if (argument == "add") {
       if (!options.data.docs.hasOwnProperty(curChannel)) {
         addURL(options.args[1], true);
       } else if (options.data.docs[curChannel].length <= 10) {

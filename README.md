@@ -15,7 +15,7 @@ In order to self-host this bot, first you'll need to clone this repository.
 
     git clone https://github.com/greencoast-studios/discord-gcs-variety.git
 
-Then, rename the file `settings.json.example` to `settings.json` and edit the file with your own Discord Token and the prefix you wish to use. If you don't have a discord token yet, you can see a guide on how to create it [here](https://github.com/moonstar-x/discord-downtime-notifier/wiki).
+Then, rename the file `settings.json.example` to `settings.json` and edit the file with your own Discord Token, the prefix you wish to use and the ID of the channel where RSS feeds should be sent. If you don't have a discord token yet, you can see a guide on how to create it [here](https://github.com/moonstar-x/discord-downtime-notifier/wiki).
 
 Install the dependencies with:
 

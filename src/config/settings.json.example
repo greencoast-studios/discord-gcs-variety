@@ -1,4 +1,5 @@
 { 
   "discord_token": "DISCORD TOKEN HERE",
-  "prefix": "$"
+  "prefix": "$",
+  "rss_channel_id": "CHANNEL_ID_HERE"
 }
