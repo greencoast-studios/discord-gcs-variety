@@ -8,6 +8,9 @@ module.exports = {
   execute(message, options) {
     const fs = require('fs');
     const { MessageEmbed } = require('discord.js');
+    const { Logger } = require('logger');
+
+    const logger = new Logger();
 
     // setNewDefaultRole(newRole:String, type:String)
     // Writes to the data json file the new default role for new members with type (bot or regular user)
@@ -31,10 +34,10 @@ module.exports = {
       function writeToJSON(role) {
         options.data.assign[type] = newRole;
         fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
-          if (err) return console.log(err);
+          if (err) return logger.error(err);
         });
-        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has changed the default ${type} role to ${role.name}.`);
-        console.log('[' + new Date().toLocaleTimeString() + ']', 'Role change written to config.');
+        logger.info(`User ${message.member.nickname || message.member.user.username} has changed the default ${type} role to ${role.name}.`);
+        logger.info('Role change written to config.');
         message.reply(`${type} default role has been changed to ${role}.`);
         
       }
@@ -43,7 +46,7 @@ module.exports = {
       if (!newRole && options.data.assign.hasOwnProperty(type)) {
         message.member.guild.roles.fetch(options.data.assign[type])
           .then(role => message.reply(`current default role set for ${type} is ${role}.`))
-          .catch(console.error);
+          .catch(err => logger.error(err));
         return
       } 
 
@@ -69,7 +72,7 @@ module.exports = {
               }
             }
           })
-          .catch(console.error);
+          .catch(err => logger.error(err));
       }
     }
 
@@ -95,21 +98,21 @@ module.exports = {
 
   autoAssign(member, options) {
     if (member.user.bot) {
-      console.log('[' + new Date().toLocaleTimeString() + ']', `Bot ${member.nickname || member.user.username} has joined.`);
+      logger.info(`Bot ${member.nickname || member.user.username} has joined.`);
       member.guild.roles.fetch(options.data.assign.bot)
         .then(role => member.roles.add(role))
         .catch(error => {
-          console.error(error);
+          logger.error(error);
           if (error == "DiscordAPIError: Missing Access") {
             member.guild.owner.user.send(`I don't have enough permissions to auto assign roles in ${member.guild.name}. Make sure I can **Manage Roles** and that my bot role is above the ones that I need to assign.`);
           }
         });
     } else {
-      console.log('[' + new Date().toLocaleTimeString() + ']', `User ${member.nickname || member.user.username} has joined.`);
+      logger.info(`User ${member.nickname || member.user.username} has joined.`);
       member.guild.roles.fetch(options.data.assign.user)
         .then(role => member.roles.add(role))
         .catch(error => {
-          console.error(error);
+          logger.error(error);
           if (error == "DiscordAPIError: Missing Access") {
             member.guild.owner.user.send(`I don't have enough permissions to auto assign roles in ${member.guild.name}. Make sure I can **Manage Roles** and that my bot role is above the ones that I need to assign.`);
           }

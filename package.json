@@ -20,6 +20,7 @@
   "dependencies": {
     "discord.js": "discordjs/discord.js",
     "fs": "^0.0.1-security",
+    "logger": "github:moonstar-x/logger",
     "rss-feed-emitter": "^2.0.1"
   }
 }

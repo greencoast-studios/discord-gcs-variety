@@ -1,6 +1,9 @@
 const {Client, Collection} = require('discord.js');
 const fs = require('fs');
 const RssFeedEmitter = require('rss-feed-emitter');
+const { Logger } = require('logger');
+
+const logger = new Logger();
 
 const settingsFilename = './config/settings.json';
 const dataFilename = './config/botdata.json';
@@ -9,32 +12,32 @@ let initialConn = false;
 
 const cfg = require(settingsFilename);
 const data = loadDataFile(dataFilename);
-console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file loaded successfully.");
+logger.info("Bot data file loaded successfully.");
 
 function loadDataFile(filename) {
   if (fs.existsSync(`${__dirname}/${filename}`)) {
     return require(filename);
   } else {
-    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file not found. Creating...");
+    logger.warn("Bot data file not found. Creating...");
     fs.writeFileSync(`${__dirname}/${filename}`, JSON.stringify({}, null, 2), function(err) {
-      if (err) return console.log(err);
+      if (err) return logger.error(err);
     });
-    console.log('[' + new Date().toLocaleTimeString() + ']', "Bot data file created!");
+    logger.info("Bot data file created!");
     return require(filename);
   }
 }
 
 function addWritableCommandToJSON(command) {
   if (data.hasOwnProperty(command)) {
-    console.log('[' + new Date().toLocaleTimeString() + ']', `${command} has been found in bot data, skipping...`);
+    logger.info(`${command} has been found in bot data, skipping...`);
     return;
   } else {
-    console.log('[' + new Date().toLocaleTimeString() + ']', `${command} has not been found, adding to bot data.`);
+    logger.warn(`${command} has not been found, adding to bot data.`);
     data[command] = {};
     fs.writeFile(`${__dirname}/${dataFilename}`, JSON.stringify(data, null, 2), function (err) {
-      if (err) return console.log(err);
+      if (err) return logger.error(err);
     });
-    console.log('[' + new Date().toLocaleTimeString() + ']', `${command} has been added to bot data.`);
+    logger.info(`${command} has been added to bot data.`);
   }
 }
 
@@ -61,8 +64,8 @@ function updatePresence() {
       name: presence,
       type: "PLAYING"
     }
-  }).then(console.log('[' + new Date().toLocaleTimeString() + ']', `Presence changed to: ${presence}.`))
-  .catch(console.error);
+  }).then(logger.info(`Presence changed to: ${presence}.`))
+  .catch(err => logger.error(err));
 }
 
 if (data.rss.hasOwnProperty("subscribedItems")) {
@@ -71,19 +74,19 @@ if (data.rss.hasOwnProperty("subscribedItems")) {
       url: item,
       refresh: 300
     })
-    console.log('[' + new Date().toLocaleTimeString() + ']', `Listening to RSS feed: ${item}`);
+    logger.info(`Listening to RSS feed: ${item}`);
   }
 }
 
 client.on('ready', () => {
-  console.log('[' + new Date().toLocaleTimeString() + ']', 'Ready!');
+  logger.info('Ready!');
   updatePresence();
 
   if (!initialConn) {
     feeder.on('new-item', item => {
       client.channels.fetch(cfg.rss_channel_id)
         .then(channel => channel.send(`**New RSS Entry:** ${item.title}\n**Date Published:** ${item.date}\n**Author:** ${item.author}\n**Read More:** ${item.link}`))
-        .catch(console.error)
+        .catch(err => logger.error(err));
     })
     initialConn = true;
   }
@@ -109,10 +112,10 @@ client.on('message', async message => {
 
   function executeCommand() {
     try {
-      console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} issued command ${command}.`);
+      logger.info(`User ${message.member.nickname || message.member.user.username} issued command ${command}.`);
       client.commands.get(command).execute(message, options);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       message.reply("there's been a problem executing your command.");
     }
   }
@@ -146,16 +149,16 @@ client.on("guildMemberRemove", async member => {
 });
 
 client.on("reconnecting", () => {
-  console.log('[' + new Date().toLocaleTimeString() + ']', 'Trying to reconnect...');
+  logger.warn('Trying to reconnect...');
 });
 
 client.on("disconnect", () => {
-  console.log('[' + new Date().toLocaleTimeString() + ']', 'Lost connection.');
+  logger.warn('Lost connection.');
 });
 
 client.on("error", error => {
-  console.log('[' + new Date().toLocaleTimeString() + ']', 'Something went wrong with the connection to the WebSocket.');
-  console.error(error);
+  logger.error('Something went wrong with the connection to the WebSocket.');
+  logger.error(error);
 });
 
 client.login(cfg.discord_token)

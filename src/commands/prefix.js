@@ -7,18 +7,21 @@ module.exports = {
   writesToData: false,
   execute(message, options) {
     const fs = require('fs');
+    const { Logger } = require('logger');
+
+    const logger = new Logger();
 
     function writeToJSON(newPrefix) {
       if (options.cfg.hasOwnProperty("prefix")) {
         options.cfg.prefix = newPrefix;
         fs.writeFile("./src/config/settings.json", JSON.stringify(options.cfg, null, 2), function(err) {
-          if (err) return console.log(err);
+          if (err) return logger.error(err);
         })
-        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has changed the prefix to ${newPrefix}.`);
-        console.log('[' + new Date().toLocaleTimeString() + ']', 'Prefix change written to config.');
+        logger.info(`User ${message.member.nickname || message.member.user.username} has changed the prefix to ${newPrefix}.`);
+        logger.info('Prefix change written to config.');
         message.reply(`prefix has been changed to \` ${newPrefix} \`.`);
       } else {
-        console.error(Error("Unexpected Type."));
+        logger.error(Error("Unexpected Type."));
         message.reply("something went wrong when trying to write to the configuration file.");
       }
     }
@@ -30,8 +33,8 @@ module.exports = {
           name: presence,
           type: "PLAYING"
         }
-      }).then(console.log('[' + new Date().toLocaleTimeString() + ']', `Presence changed to: ${presence}.`))
-      .catch(console.error);
+      }).then(logger.info(`Presence changed to: ${presence}.`))
+      .catch(err => logger.error(err));
     }
 
     const newPrefix = options.args[0];

@@ -8,6 +8,9 @@ module.exports = {
   writesToData: false,
   execute(message, options) {
     const { MessageEmbed } = require('discord.js');
+    const { Logger } = require('logger');
+    
+    const logger = new Logger();
     const spacesInsideQuotesRegEx = /('.*?'|".*?"|\S+)/gi;
     const DESC_LIMIT = 2048;
 
@@ -55,7 +58,7 @@ module.exports = {
             msg.react("\u{1F44D}");
             msg.react("\u{1F44E}");
           })
-          .catch(console.error);
+          .catch(err => logger.error(err));
 
       } else {
         message.reply("your poll is too long to display.");
@@ -83,7 +86,7 @@ module.exports = {
               msg.react(numberEmojis[i]);
             }
           })
-          .catch(console.error);
+          .catch(err => logger.error(err));
 
       } else {
         message.reply("your poll is too long to display.");

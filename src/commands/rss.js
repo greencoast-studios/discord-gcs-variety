@@ -8,7 +8,9 @@ module.exports = {
   execute(message, options) {
     const fs = require('fs');
     const { MessageEmbed } = require('discord.js');
+    const { Logger } = require('logger');
 
+    const logger = new Logger();
     const argument = options.args[0];
 
     function subscribeToFeed(url, firstEntry) {
@@ -27,10 +29,10 @@ module.exports = {
         }
 
         fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
-          if (err) return console.log(err);
+          if (err) return logger.error(err);
         });
-        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has subscribed to RSS: ${url}`);
-        console.log('[' + new Date().toLocaleTimeString() + ']', 'RSS change written to config.');
+        logger.info(`User ${message.member.nickname || message.member.user.username} has subscribed to RSS: ${url}`);
+        logger.info('RSS change written to config.');
 
         options.feeder.add({
           url: url,
@@ -52,10 +54,10 @@ module.exports = {
       if (options.data.rss.subscribedItems.length > 0) {
         const deletedURL = options.data.rss.subscribedItems.splice(index - 1, 1).pop();
         fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
-          if (err) return console.log(err);
+          if (err) return logger.error(err);
         });
-        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has unsubscribed from ${deletedURL}`);
-        console.log('[' + new Date().toLocaleTimeString() + ']', 'RSS change written to config.');
+        logger.info(`User ${message.member.nickname || message.member.user.username} has unsubscribed from ${deletedURL}`);
+        logger.info('RSS change written to config.');
 
         options.feeder.remove(deletedURL);
 

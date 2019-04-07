@@ -11,6 +11,9 @@ module.exports = {
   writesToData: false,
   execute(message, options) {
     const { MessageAttachment } = require('discord.js');
+    const { Logger } = require('logger');
+
+    const logger = new Logger();
     const args = options.args.join(' ');
 
     // showTimeRemaining(timeRemaining:Int) -> String
@@ -39,16 +42,16 @@ module.exports = {
         options.user.setAvatar(args)
           .then(user => {
             timeFromLastExecution = curTime;
-            console.log('[' + new Date().toLocaleTimeString() + ']', `Avatar has been changed by user ${message.member.nickname || message.member.user.username}.`);
+            logger.info(`Avatar has been changed by user ${message.member.nickname || message.member.user.username}.`);
             message.reply('avatar has been changed successfully.');
           })
           .catch( error => {
-            console.error(error);
+            logger.error(error);
             message.reply('a problem has ocurred when changing the avatar, make sure the specified URL is an image.')
           });
       } else {
         const timeRemaining = cooldown - intervalOfExection;
-        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has hit a cooldown and needs to wait ${showTimeRemaining(timeRemaining)} more.`);
+        logger.warn(`User ${message.member.nickname || message.member.user.username} has hit a cooldown and needs to wait ${showTimeRemaining(timeRemaining)} more.`);
         message.reply(`you need to wait ${showTimeRemaining(timeRemaining)} more before issuing this command again.`);
       }
     } else {

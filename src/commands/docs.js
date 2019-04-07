@@ -8,7 +8,9 @@ module.exports = {
   execute(message, options) {
     const fs = require('fs');
     const { MessageEmbed } = require('discord.js');
+    const { Logger } = require('logger');
 
+    const logger = new Logger();
     const argument = options.args[0];
     const curChannel = message.channel.id;
 
@@ -28,10 +30,10 @@ module.exports = {
         }
 
         fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
-          if (err) return console.log(err);
+          if (err) return logger.error(err);
         });
-        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has added the documentation link for channel ${message.channel.name} with the url: ${url}`);
-        console.log('[' + new Date().toLocaleTimeString() + ']', 'Docs change written to config.');
+        logger.info(`User ${message.member.nickname || message.member.user.username} has added the documentation link for channel ${message.channel.name} with the url: ${url}`);
+        logger.info('Docs change written to config.');
         message.reply(`you've added **${url}** to this channel's documentation links.`);
       } else {
         message.reply("your url doesn't seem to be correct. Make sure it begins with **https://** or **http://**.");
@@ -47,10 +49,10 @@ module.exports = {
       if (options.data.docs.hasOwnProperty(curChannel)) {
         const deletedURL = options.data.docs[curChannel].splice(index - 1, 1).pop();
         fs.writeFile("./src/config/botdata.json", JSON.stringify(options.data, null, 2), function (err) {
-          if (err) return console.log(err);
+          if (err) return logger.error(err);
         });
-        console.log('[' + new Date().toLocaleTimeString() + ']', `User ${message.member.nickname || message.member.user.username} has deleted the documentation link ${deletedURL} for channel ${message.channel.name}`);
-        console.log('[' + new Date().toLocaleTimeString() + ']', 'Docs change written to config.');
+        logger.info(`User ${message.member.nickname || message.member.user.username} has deleted the documentation link ${deletedURL} for channel ${message.channel.name}`);
+        logger.info('Docs change written to config.');
         message.reply(`succesfully deleted **${deletedURL}** from this channel's documentation links.`);
       } else {
         message.reply("this text channel has no documentation links to remove.");
