@@ -9,6 +9,15 @@ To self-host this bot you'll need the following:
 * [git](https://git-scm.com/)
 * [node.js](https://nodejs.org/en/)
 
+## Dependencies
+
+| Dependency:                                                        | Description:                                                        |
+|--------------------------------------------------------------------|---------------------------------------------------------------------|
+| [discord.js](https://github.com/discordjs/discord.js)              | A powerful JavaScript library for interacting with the Discord API. |
+| [fs](https://www.npmjs.com/package/fs)                             | File system utilities for Node.js.                                  |
+| [rss-feed-emitter](https://www.npmjs.com/package/rss-feed-emitter) | Super RSS News Feed aggregator written in Node.js and ES6.          |
+| [logger](https://github.com/moonstar-x/logger)                     | A small logger module for Node.js.                                  |
+
 ## Installation
 
 In order to self-host this bot, first you'll need to clone this repository.
@@ -20,23 +29,15 @@ Then, rename the file `settings.json.example` to `settings.json` and edit the fi
 Install the dependencies with:
 
     npm install
-  
-or:
-
-    yarn install
 
 And run the bot with:
 
     npm start
 
-or:
-
-    yarn start
-
 ## Usage
 
 Type `$prefix help` in a text channel to receive a list of all the available commands.
 
-## Author
+## Authors
 
-This bot was made by [moonstar-x](https://github.com/moonstar-x) of [Greencoast Studios](https://github.com/greencoast-studios).
+This bot was made by [moonstar-x](https://github.com/moonstar-x) and [tanb01](https://github.com/tanb01) of [Greencoast Studios](https://github.com/greencoast-studios).
