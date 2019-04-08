@@ -97,6 +97,9 @@ module.exports = {
   },
 
   autoAssign(member, options) {
+    const { Logger } = require('logger');
+    const logger = new Logger();
+    
     if (member.user.bot) {
       logger.info(`Bot ${member.nickname || member.user.username} has joined.`);
       member.guild.roles.fetch(options.data.assign.bot)
