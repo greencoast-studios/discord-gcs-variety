@@ -1,3 +1,7 @@
+const fs = require('fs');
+const { Logger } = require('logger');
+const logger = new Logger();
+
 module.exports = {
   name: 'prefix',
   description: 'Changes the prefix used by this bot. If no argument is given, display the current prefix.',
@@ -6,11 +10,6 @@ module.exports = {
   exceptionalPermission: true,
   writesToData: false,
   execute(message, options) {
-    const fs = require('fs');
-    const { Logger } = require('logger');
-
-    const logger = new Logger();
-
     function writeToJSON(newPrefix) {
       if (options.cfg.hasOwnProperty("prefix")) {
         options.cfg.prefix = newPrefix;

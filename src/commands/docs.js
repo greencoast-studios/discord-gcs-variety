@@ -1,3 +1,8 @@
+const fs = require('fs');
+const { MessageEmbed } = require('discord.js');
+const { Logger } = require('logger');
+const logger = new Logger();
+
 module.exports = {
   name: 'docs',
   description: 'Get the documentation link for the corresponding text channel. Use argument usage or help to get a more detailed usage information.',
@@ -6,11 +11,6 @@ module.exports = {
   exceptionalPermission: true,
   writesToData: true,
   execute(message, options) {
-    const fs = require('fs');
-    const { MessageEmbed } = require('discord.js');
-    const { Logger } = require('logger');
-
-    const logger = new Logger();
     const argument = options.args[0];
     const curChannel = message.channel.id;
 

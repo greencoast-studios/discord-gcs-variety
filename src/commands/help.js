@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+
 module.exports = {
   name: 'help',
   description: "Sends a list of the commands available as an embed message.",
@@ -6,8 +8,6 @@ module.exports = {
   exceptionalPermission: false,
   writesToData: false,
   execute(message, options) {
-    const { MessageEmbed } = require('discord.js');
-
     let commandsArr = [];
     let messageToPush = "";
     let toPush = false;

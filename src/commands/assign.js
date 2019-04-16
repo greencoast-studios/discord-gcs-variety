@@ -1,3 +1,8 @@
+const fs = require('fs');
+const { MessageEmbed } = require('discord.js');
+const { Logger } = require('logger');
+const logger = new Logger();
+
 module.exports = {
   name: 'assign',
   description: 'Assign a default role for new members, mention the role you wish to assign. Using argument "usage" or "help" will display a more detailed message.',
@@ -6,12 +11,6 @@ module.exports = {
   exceptionalPermission: false,
   writesToData: true,
   execute(message, options) {
-    const fs = require('fs');
-    const { MessageEmbed } = require('discord.js');
-    const { Logger } = require('logger');
-
-    const logger = new Logger();
-
     // setNewDefaultRole(newRole:String, type:String)
     // Writes to the data json file the new default role for new members with type (bot or regular user)
     // newRole should be a mention to the desired role which gets transformed to it's ID and stripped from any character.

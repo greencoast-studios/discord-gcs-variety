@@ -1,3 +1,8 @@
+const fs = require('fs');
+const { MessageEmbed } = require('discord.js');
+const { Logger } = require('logger');
+const logger = new Logger();
+
 module.exports = {
   name: 'rss',
   description: "An RSS feed that updates in a set text channel. Use argument usage for a more detailed usage mesage.",
@@ -6,11 +11,6 @@ module.exports = {
   exceptionalPermission: false,
   writesToData: true,
   execute(message, options) {
-    const fs = require('fs');
-    const { MessageEmbed } = require('discord.js');
-    const { Logger } = require('logger');
-
-    const logger = new Logger();
     const argument = options.args[0];
 
     function subscribeToFeed(url, firstEntry) {

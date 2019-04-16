@@ -1,3 +1,7 @@
+const { MessageAttachment } = require('discord.js');
+const { Logger } = require('logger');
+const logger = new Logger();
+
 let timeFromLastExecution = undefined;
 // cooldown is in ms, 600000 ms = 10 mins
 const cooldown = 600000;
@@ -10,10 +14,6 @@ module.exports = {
   exceptionalPermission: true,
   writesToData: false,
   execute(message, options) {
-    const { MessageAttachment } = require('discord.js');
-    const { Logger } = require('logger');
-
-    const logger = new Logger();
     const args = options.args.join(' ');
 
     // showTimeRemaining(timeRemaining:Int) -> String

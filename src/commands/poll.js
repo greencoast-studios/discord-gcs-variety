@@ -1,3 +1,7 @@
+const { MessageEmbed } = require('discord.js');
+const { Logger } = require('logger');
+const logger = new Logger();
+
 module.exports = {
   name: 'poll',
   description: 'Create a poll with up to 10 options. The first argument should be a question and the next ones are the available options. If only a question is issued, start the poll with yes/no options.',
@@ -7,10 +11,6 @@ module.exports = {
   exceptionalPermission: false,
   writesToData: false,
   execute(message, options) {
-    const { MessageEmbed } = require('discord.js');
-    const { Logger } = require('logger');
-    
-    const logger = new Logger();
     const spacesInsideQuotesRegEx = /('.*?'|".*?"|\S+)/gi;
     const DESC_LIMIT = 2048;
 

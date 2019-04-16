@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+
 module.exports = {
   name: 'randomizer',
   description: 'Issue this command with a list of commands and the bot will reply you with a randomly selected option.',
@@ -6,8 +8,6 @@ module.exports = {
   exceptionalPermission: false,
   writesToData: false,
   execute(message, options) {
-    const { MessageEmbed } = require('discord.js');
-
     // getRandomElement(arr:Array)
     // Returns a random element from an array.
     function getRandomElement(arr) {

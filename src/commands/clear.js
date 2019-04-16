@@ -1,3 +1,6 @@
+const { Logger } = require('logger');
+const logger = new Logger();
+
 module.exports = {
   name: 'clear',
   description: 'Enter an integer argument defining the amount of messages to erase above the current message.',
@@ -7,9 +10,6 @@ module.exports = {
   writesToData: false,
   timeout: 5000,
   execute(message, options) {
-    const { Logger } = require('logger');
-
-    const logger = new Logger();
     const numberOfMessages = Number(options.args[0]);
     const messageLimit = 20;
 
