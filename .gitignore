@@ -1,3 +1,4 @@
+.idea/
 node_modules/
 settings.json
 src/config/botdata.json

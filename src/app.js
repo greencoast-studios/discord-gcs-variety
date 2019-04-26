@@ -1,4 +1,4 @@
-const {Client, Collection} = require('discord.js');
+const { Client, Collection } = require('discord.js');
 const fs = require('fs');
 const RssFeedEmitter = require('rss-feed-emitter');
 const { Logger } = require('logger');
@@ -19,7 +19,7 @@ function loadDataFile(filename) {
     return require(filename);
   } else {
     logger.warn("Bot data file not found. Creating...");
-    fs.writeFileSync(`${__dirname}/${filename}`, JSON.stringify({}, null, 2), function(err) {
+    fs.writeFileSync(`${__dirname}/${filename}`, JSON.stringify({}, null, 2), function (err) {
       if (err) return logger.error(err);
     });
     logger.info("Bot data file created!");
@@ -60,12 +60,12 @@ for (const file of commandFiles) {
 function updatePresence() {
   const presence = `${cfg.prefix}help`;
   client.user.setPresence({
-    activity: {
-      name: presence,
-      type: "PLAYING"
-    }
-  }).then(logger.info(`Presence changed to: ${presence}.`))
-  .catch(err => logger.error(err));
+      activity: {
+        name: presence,
+        type: "PLAYING"
+      }
+    }).then(logger.info(`Presence changed to: ${presence}.`))
+    .catch(err => logger.error(err));
 }
 
 if (data.rss.hasOwnProperty("subscribedItems")) {
@@ -90,7 +90,7 @@ client.on('ready', () => {
     })
     initialConn = true;
   }
-  
+
 });
 
 client.on('message', async message => {
@@ -142,10 +142,14 @@ client.on("guildMemberAdd", async member => {
     data: data
   }
   client.commands.get("assign").autoAssign(member, options);
+  client.commands.get("greeting").greet(member, options, 'greet');
 });
 
 client.on("guildMemberRemove", async member => {
-  
+  const options = {
+    data: data
+  }
+  client.commands.get("greeting").greet(member, options, 'goodbye');
 });
 
 client.on("reconnecting", () => {
